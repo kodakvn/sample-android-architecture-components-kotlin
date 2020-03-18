@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 
 @Database(entities = [Note::class], version = 1)
-abstract class NoteDatabase: RoomDatabase(), NoteDao {
+abstract class NoteDatabase: RoomDatabase() {
     companion object {
         private lateinit var instance: NoteDatabase
 
@@ -47,5 +47,5 @@ abstract class NoteDatabase: RoomDatabase(), NoteDao {
         }
     }
 
-    abstract fun noteDao(): NoteDatabase
+    abstract fun noteDao(): NoteDao
 }
