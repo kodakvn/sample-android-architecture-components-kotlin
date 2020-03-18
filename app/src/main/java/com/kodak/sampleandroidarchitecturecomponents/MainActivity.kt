@@ -1,12 +1,21 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var noteViewModel: NoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
+            Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
+        })
     }
 }
