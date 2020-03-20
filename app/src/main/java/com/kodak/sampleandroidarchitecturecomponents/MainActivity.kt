@@ -4,10 +4,14 @@ import android.R.attr
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -45,6 +49,24 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
             adapter.setNotes(it)
         })
+
+        itemTouchCallback.attachToRecyclerView(recyclerView)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.delete_all_notes -> {
+                noteViewModel.deleteAllNotes()
+                Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -74,4 +96,39 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private val itemTouchCallback = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)) {
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            return super.getMovementFlags(recyclerView, viewHolder)
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun setDefaultDragDirs(defaultDragDirs: Int) {
+            super.setDefaultDragDirs(defaultDragDirs)
+        }
+
+        override fun setDefaultSwipeDirs(defaultSwipeDirs: Int) {
+            super.setDefaultSwipeDirs(defaultSwipeDirs)
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            noteViewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition))
+            Toast.makeText(this@MainActivity, "Note deleted", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun getDragDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            return super.getDragDirs(recyclerView, viewHolder)
+        }
+
+        override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            return super.getSwipeDirs(recyclerView, viewHolder)
+        }
+    })
 }
