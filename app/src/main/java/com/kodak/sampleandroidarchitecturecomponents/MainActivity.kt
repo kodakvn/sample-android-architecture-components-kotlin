@@ -1,13 +1,11 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
-import android.R.attr
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.ADD_NOTE_REQUEST
+import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EDIT_NOTE_REQUEST
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCRIPTION
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
+import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID as EXTRA_ID
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         floatingButton = findViewById(R.id.button_add_note)
         floatingButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddNoteActivity::class.java)
+            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
             startActivityForResult(intent, ADD_NOTE_REQUEST)
         }
 
@@ -51,6 +51,17 @@ class MainActivity : AppCompatActivity() {
         })
 
         itemTouchCallback.attachToRecyclerView(recyclerView)
+
+        adapter.setOnItemClickListener(object: NoteAdapter.OnItemClickListener {
+            override fun onItemClicked(note: Note) {
+                val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+                intent.putExtra(EXTRA_ID, note.id)
+                intent.putExtra(EXTRA_TITLE, note.title)
+                intent.putExtra(EXTRA_DESCRIPTION, note.description)
+                intent.putExtra(EXTRA_PRIORITY, note.priority)
+                startActivityForResult(intent, EDIT_NOTE_REQUEST)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,7 +83,6 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        var note: Note? = null
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ADD_NOTE_REQUEST -> {
@@ -80,20 +90,37 @@ class MainActivity : AppCompatActivity() {
                     val description = data?.getStringExtra(EXTRA_DESCRIPTION)
                     val priority = data?.getIntExtra(EXTRA_PRIORITY, 1)
 
-                    if (title != null && description != null && priority != null)
-                    note = Note(title = title!!, description = description!!, priority = priority!!)
+                    if (title == null || description == null || priority == null) {
+                        Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val note = Note(title = title!!, description = description!!, priority = priority!!)
+                    noteViewModel.insert(note)
+                    Toast.makeText(this, "Note saved!", Toast.LENGTH_SHORT).show()
+                }
+                EDIT_NOTE_REQUEST -> {
+                    val id = data?.getLongExtra(EXTRA_ID, -1L)
+
+                    if (id == null || id!! == -1L) {
+                        Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val title = data?.getStringExtra(EXTRA_TITLE)
+                    val description = data?.getStringExtra(EXTRA_DESCRIPTION)
+                    val priority = data?.getIntExtra(EXTRA_PRIORITY, 1)
+
+                    if (title == null || description == null || priority == null) {
+                        Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val note = Note(id, title, description, priority)
+                    noteViewModel.update(note)
+                    Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            if (note != null) {
-                noteViewModel.insert(note)
-                Toast.makeText(this, "Note saved!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        if (note == null) {
-            Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "Note not saved!", Toast.LENGTH_SHORT).show()
         }
     }
 

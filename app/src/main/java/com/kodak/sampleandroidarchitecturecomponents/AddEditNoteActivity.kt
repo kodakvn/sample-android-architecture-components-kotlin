@@ -10,11 +10,12 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCRIPTION
+import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
 
 
-class AddNoteActivity: AppCompatActivity() {
+class AddEditNoteActivity: AppCompatActivity() {
 
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
@@ -32,7 +33,15 @@ class AddNoteActivity: AppCompatActivity() {
         numberPickerPriority.maxValue = 10
 
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-        title = "Add Note"
+
+        if (intent.hasExtra(EXTRA_ID)) {
+            title = "Edit Note"
+            editTextTitle.setText(intent.getStringExtra(EXTRA_TITLE))
+            editTextDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION))
+            numberPickerPriority.value = intent.getIntExtra(EXTRA_PRIORITY, 1)
+        } else {
+            title = "Add Note"
+        }
     }
 
     private fun saveNote() {
@@ -49,6 +58,11 @@ class AddNoteActivity: AppCompatActivity() {
         data.putExtra(EXTRA_TITLE, title)
         data.putExtra(EXTRA_DESCRIPTION, description)
         data.putExtra(EXTRA_PRIORITY, priority)
+
+        val id = intent.getLongExtra(EXTRA_ID, -1L)
+        if (id != -1L) {
+            data.putExtra(EXTRA_ID, id)
+        }
 
         setResult(Activity.RESULT_OK, data)
         finish()

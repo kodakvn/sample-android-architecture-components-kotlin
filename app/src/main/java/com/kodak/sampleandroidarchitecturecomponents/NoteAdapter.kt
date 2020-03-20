@@ -8,7 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClicked(note: Note)
+    }
+
     private var notes: List<Note> = ArrayList<Note>()
+    private var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
@@ -35,7 +41,11 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
         return notes[position]
     }
 
-    class ViewHolder: RecyclerView.ViewHolder {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
+    inner class ViewHolder: RecyclerView.ViewHolder {
         var textViewTitle: TextView
         var textViewDescription: TextView
         var textViewPriority: TextView
@@ -44,6 +54,10 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
             textViewTitle = view.findViewById(R.id.text_view_title)
             textViewDescription = view.findViewById(R.id.text_view_description)
             textViewPriority = view.findViewById(R.id.text_view_priority)
+
+            view.setOnClickListener {
+                listener?.onItemClicked(notes[adapterPosition])
+            }
         }
     }
 }
