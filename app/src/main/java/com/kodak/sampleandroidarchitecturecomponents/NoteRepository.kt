@@ -1,6 +1,7 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
 import android.app.Application
+import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
@@ -8,8 +9,8 @@ class NoteRepository {
     private lateinit var noteDao: NoteDao
     private lateinit var allNotes: LiveData<List<Note>>
 
-    constructor(application: Application) {
-        val database = NoteDatabase.getInstance(application)
+    constructor(context: Context) {
+        val database = NoteDatabase.getInstance(context)
         noteDao = database.noteDao()
         allNotes = noteDao.getAllNotes()
     }
