@@ -1,13 +1,11 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 
-class NoteViewModel(context: Context) : ViewModel() {
-    private var repository: NoteRepository = NoteRepository(context)
+class NoteViewModel(application: Application) : AndroidViewModel(application) {
+    private var repository: NoteRepository = NoteRepository(application)
     private var allNotes: LiveData<List<Note>>
 
     init {
