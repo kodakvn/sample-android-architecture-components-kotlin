@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         noteViewModel.getAllNotes().observe(this, Observer<RealmResults<Note>> {
             Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
-            adapter.submitList(it)
+            adapter.setNotes(it)
         })
 
         itemTouchCallback.attachToRecyclerView(recyclerView)
