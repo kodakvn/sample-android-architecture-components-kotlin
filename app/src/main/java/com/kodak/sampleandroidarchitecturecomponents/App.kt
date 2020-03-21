@@ -1,6 +1,7 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
 import android.app.Application
+import io.realm.Realm
 
 class App : Application() {
     companion object {
@@ -11,5 +12,10 @@ class App : Application() {
 
     init {
         instance = this
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Realm.init(this)
     }
 }

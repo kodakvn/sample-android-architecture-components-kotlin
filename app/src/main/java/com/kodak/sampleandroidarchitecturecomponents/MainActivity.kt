@@ -18,6 +18,7 @@ import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EDIT_NOTE_R
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCRIPTION
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
+import io.realm.RealmResults
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID as EXTRA_ID
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-        noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
+        noteViewModel.getAllNotes().observe(this, Observer<RealmResults<Note>> {
             Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
             adapter.submitList(it)
         })
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            noteViewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition))
+            noteViewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition).id)
             Toast.makeText(this@MainActivity, "Note deleted", Toast.LENGTH_SHORT).show()
         }
 

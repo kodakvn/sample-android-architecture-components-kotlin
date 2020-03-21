@@ -1,10 +1,12 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
-@Entity(tableName = "note_table")
-data class Note(@PrimaryKey(autoGenerate = true) val id: Long = 0,
-           val title: String,
-           val description: String,
-           val priority: Int)
+open class Note(@PrimaryKey var id: Long,
+                var title: String,
+                var description: String,
+                var priority: Int): RealmObject() {
+    constructor(): this(0L, "", "", 1)
+    constructor(title: String, description: String, priority: Int): this(0L, title, description, priority)
+}

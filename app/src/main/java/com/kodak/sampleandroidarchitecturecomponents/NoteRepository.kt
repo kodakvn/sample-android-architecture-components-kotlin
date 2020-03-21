@@ -1,36 +1,40 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
-import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import io.realm.Realm
+import io.realm.RealmResults
 
 class NoteRepository {
     private var noteDao: NoteDao
-    private var allNotes: LiveData<List<Note>>
+    private var allNotes: LiveData<RealmResults<Note>>
 
-    constructor(context: Context) {
-        val database = NoteDatabase.getInstance(context)
-        noteDao = database.noteDao()
+    constructor(realm: Realm) {
+        noteDao = NoteDaoImpl.getInstance(realm)
         allNotes = noteDao.getAllNotes()
     }
 
     fun insert(note: Note) {
-        InsertNoteAsyncTask(noteDao).execute(note)
+        noteDao.insert(note)
+        //InsertNoteAsyncTask(noteDao).execute(note)
     }
 
     fun update(note: Note) {
-        UpdateNoteAsyncTask(noteDao).execute(note)
+        noteDao.update(note)
+        //UpdateNoteAsyncTask(noteDao).execute(note)
     }
 
-    fun delete(note: Note) {
-        DeleteNoteAsyncTask(noteDao).execute(note)
+    fun delete(id: Long) {
+        noteDao.delete(id)
+        //DeleteNoteAsyncTask(noteDao).execute(id)
     }
 
     fun deleteAllNotes() {
-        DeleteAllNotesAsyncTask(noteDao).execute()
+        noteDao.deleteAlLNotes()
+        //DeleteAllNotesAsyncTask(noteDao).execute()
     }
 
-    fun getAllNotes(): LiveData<List<Note>> {
+    fun getAllNotes(): LiveData<RealmResults<Note>> {
         return allNotes
     }
 
@@ -61,15 +65,15 @@ class NoteRepository {
             }
         }
 
-        private class DeleteNoteAsyncTask: AsyncTask<Note, Void, Int> {
+        private class DeleteNoteAsyncTask: AsyncTask<Long, Void, Int> {
             private var noteDao: NoteDao
 
             constructor(noteDao: NoteDao) {
                 this.noteDao = noteDao
             }
 
-            override fun doInBackground(vararg params: Note?): Int {
-                noteDao.delete(params[0] as Note)
+            override fun doInBackground(vararg params: Long?): Int {
+                noteDao.delete(params[0] as Long)
                 return 0
             }
         }

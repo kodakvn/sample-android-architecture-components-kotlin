@@ -1,23 +1,17 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import io.realm.RealmResults
 
-@Dao
 interface NoteDao {
 
-    @Insert
     fun insert(note: Note)
 
-    @Update
     fun update(note: Note)
 
-    @Delete
-    fun delete(note: Note)
+    fun delete(id: Long)
 
-    @Query("DELETE FROM note_table")
     fun deleteAlLNotes()
 
-    @Query("SELECT * FROM note_table ORDER BY priority DESC")
-    fun getAllNotes(): LiveData<List<Note>>
+    fun getAllNotes(): LiveData<RealmResults<Note>>
 }
