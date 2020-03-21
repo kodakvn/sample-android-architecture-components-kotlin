@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +19,6 @@ import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCR
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
 import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID as EXTRA_ID
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        noteViewModel = ViewModelProviders.of(this, CustomViewModelFactory(this)).get(NoteViewModel::class.java)
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
             Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
             adapter.submitList(it)
