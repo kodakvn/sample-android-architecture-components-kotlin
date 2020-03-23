@@ -1,4 +1,4 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.update
 
 import android.app.Activity
 import android.content.Intent
@@ -9,10 +9,11 @@ import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCRIPTION
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_DESCRIPTION
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_ID
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_PRIORITY
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_TITLE
+import com.kodak.sampleandroidarchitecturecomponents.R
 
 
 class AddEditNoteActivity: AppCompatActivity() {

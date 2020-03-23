@@ -1,4 +1,4 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kodak.sampleandroidarchitecturecomponents.R
+import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
 
 
 class NoteAdapter: ListAdapter<Note, NoteAdapter.ViewHolder> {

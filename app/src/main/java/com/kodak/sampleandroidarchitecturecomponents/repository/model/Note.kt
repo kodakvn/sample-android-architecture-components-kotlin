@@ -1,4 +1,4 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.repository.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

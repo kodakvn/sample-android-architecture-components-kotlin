@@ -1,8 +1,11 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.repository
 
 import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
+import com.kodak.sampleandroidarchitecturecomponents.repository.db.NoteDao
+import com.kodak.sampleandroidarchitecturecomponents.repository.db.NoteDatabase
 
 class NoteRepository {
     private var noteDao: NoteDao

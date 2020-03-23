@@ -1,4 +1,4 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.utils
 
 class Const {
     companion object {

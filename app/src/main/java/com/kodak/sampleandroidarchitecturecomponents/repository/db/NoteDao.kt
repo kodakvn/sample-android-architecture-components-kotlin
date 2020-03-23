@@ -1,7 +1,8 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.repository.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
 
 @Dao
 interface NoteDao {

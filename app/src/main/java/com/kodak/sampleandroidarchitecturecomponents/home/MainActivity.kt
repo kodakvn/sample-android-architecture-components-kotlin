@@ -1,4 +1,4 @@
-package com.kodak.sampleandroidarchitecturecomponents
+package com.kodak.sampleandroidarchitecturecomponents.home
 
 import android.app.Activity
 import android.content.Intent
@@ -13,12 +13,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.ADD_NOTE_REQUEST
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EDIT_NOTE_REQUEST
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_DESCRIPTION
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_PRIORITY
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_TITLE
-import com.kodak.sampleandroidarchitecturecomponents.Const.Companion.EXTRA_ID as EXTRA_ID
+import com.kodak.sampleandroidarchitecturecomponents.*
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.ADD_NOTE_REQUEST
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EDIT_NOTE_REQUEST
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_DESCRIPTION
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_PRIORITY
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_TITLE
+import com.kodak.sampleandroidarchitecturecomponents.update.AddEditNoteActivity
+import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
+import com.kodak.sampleandroidarchitecturecomponents.viewmodel.NoteViewModel
+import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_ID as EXTRA_ID
 
 class MainActivity : AppCompatActivity() {
 
