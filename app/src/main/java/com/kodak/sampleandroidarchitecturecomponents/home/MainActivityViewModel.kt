@@ -1,13 +1,19 @@
-package com.kodak.sampleandroidarchitecturecomponents.viewmodel
+package com.kodak.sampleandroidarchitecturecomponents.home
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.kodak.sampleandroidarchitecturecomponents.App
 import com.kodak.sampleandroidarchitecturecomponents.repository.NoteRepository
 import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
+import javax.inject.Inject
 
-class NoteViewModel : ViewModel() {
-    private var repository: NoteRepository = NoteRepository(App.getInstance().applicationContext)
+class MainActivityViewModel : ViewModel() {
+
+    @Inject
+    lateinit var repository: NoteRepository
+
     private var allNotes: LiveData<List<Note>>
 
     init {

@@ -21,20 +21,21 @@ import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA
 import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_TITLE
 import com.kodak.sampleandroidarchitecturecomponents.update.AddEditNoteActivity
 import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
-import com.kodak.sampleandroidarchitecturecomponents.viewmodel.NoteViewModel
+import javax.inject.Inject
 import com.kodak.sampleandroidarchitecturecomponents.utils.Const.Companion.EXTRA_ID as EXTRA_ID
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var noteViewModel: NoteViewModel
+    @Inject lateinit var viewModel: MainActivityViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var floatingButton: FloatingActionButton
     private val adapter = NoteAdapter()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setupMainActivityComponent()
 
         floatingButton = findViewById(R.id.button_add_note)
         floatingButton.setOnClickListener {
@@ -47,11 +48,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
-        noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
-            Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
-            adapter.submitList(it)
-        })
+//        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+//        viewModel.getAllNotes().observe(this, Observer<List<Note>> {
+//            Toast.makeText(this@MainActivity, "onChanged", Toast.LENGTH_SHORT).show()
+//            adapter.submitList(it)
+//        })
 
         itemTouchCallback.attachToRecyclerView(recyclerView)
 
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.delete_all_notes -> {
-                noteViewModel.deleteAllNotes()
+                viewModel.deleteAllNotes()
                 Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show()
                 return true
             }
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val note = Note(title = title!!, description = description!!, priority = priority!!)
-                    noteViewModel.insert(note)
+                    viewModel.insert(note)
                     Toast.makeText(this, "Note saved!", Toast.LENGTH_SHORT).show()
                 }
                 EDIT_NOTE_REQUEST -> {
@@ -127,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val note = Note(id, title, description, priority)
-                    noteViewModel.update(note)
+                    viewModel.update(note)
                     Toast.makeText(this, "Note updated!", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -156,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            noteViewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition))
+            viewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition))
             Toast.makeText(this@MainActivity, "Note deleted", Toast.LENGTH_SHORT).show()
         }
 

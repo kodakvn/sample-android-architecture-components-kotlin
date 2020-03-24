@@ -1,6 +1,7 @@
 package com.kodak.sampleandroidarchitecturecomponents
 
 import android.app.Application
+import com.kodak.sampleandroidarchitecturecomponents.repository.RepositoryModule
 
 class App : Application() {
 
@@ -27,6 +28,7 @@ class App : Application() {
     private fun initAppComponent() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
+            .repositoryModule(RepositoryModule(this))
             .build()
     }
 }

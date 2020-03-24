@@ -6,15 +6,16 @@ import androidx.lifecycle.LiveData
 import com.kodak.sampleandroidarchitecturecomponents.repository.model.Note
 import com.kodak.sampleandroidarchitecturecomponents.repository.db.NoteDao
 import com.kodak.sampleandroidarchitecturecomponents.repository.db.NoteDatabase
+import javax.inject.Inject
 
 class NoteRepository {
+
     private var noteDao: NoteDao
     private var allNotes: LiveData<List<Note>>
 
-    constructor(context: Context) {
-        val database = NoteDatabase.getInstance(context)
-        noteDao = database.noteDao()
-        allNotes = noteDao.getAllNotes()
+    constructor(noteDao: NoteDao) {
+        this.noteDao = noteDao
+        this.allNotes = noteDao.getAllNotes()
     }
 
     fun insert(note: Note) {
