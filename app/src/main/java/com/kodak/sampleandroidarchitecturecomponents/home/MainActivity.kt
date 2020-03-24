@@ -67,6 +67,13 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun setupMainActivityComponent() {
+        App.getInstance()
+            .getAppComponent()
+            .inject(MainActivityModule(this))
+            .inject(this)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
